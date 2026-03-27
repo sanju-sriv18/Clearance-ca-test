@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.22.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.5.0" camunda:diagramRelationId="aa97fb88-08f9-489d-96f5-8450c3e7e9df">
+  <bpmn:collaboration id="Collaboration_00slypr" name="EXP08 - Determine EDT Process">
+    <bpmn:participant id="Participant_14syroo" name="IMP08 - Determine EDT Process v3" processRef="Process_jbboihw" />
+    <bpmn:textAnnotation id="TextAnnotation_0kf80b4">
+      <bpmn:text>CARE</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_1bxbdfc">
+      <bpmn:text>- call to Trade Tools (when needed) for EDT calculation</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_1a28hhc">
+      <bpmn:text>- call to GCC rule(s) for country EDT configuration (eg. FTZ no trade tools call but $3 flat fee applied)</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1pezyqt" associationDirection="None" sourceRef="Activity_08vzhrs" targetRef="TextAnnotation_0kf80b4" />
+    <bpmn:association id="Association_1c6oswm" associationDirection="None" sourceRef="TextAnnotation_1bxbdfc" targetRef="Activity_008e0rg" />
+    <bpmn:association id="Association_1cf6wuu" associationDirection="None" sourceRef="Activity_008e0rg" targetRef="TextAnnotation_1a28hhc" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_jbboihw" name="ADT" isExecutable="true">
+    <bpmn:sequenceFlow id="Flow_0s59ohr" sourceRef="StartEvent_1" targetRef="Activity_008e0rg" />
+    <bpmn:sequenceFlow id="Flow_0vij3n7" sourceRef="Activity_008e0rg" targetRef="Activity_08vzhrs" />
+    <bpmn:sequenceFlow id="Flow_05qayxb" sourceRef="Activity_1y5x34k" targetRef="Event_0cl2wyc" />
+    <bpmn:startEvent id="StartEvent_1" name="Start EDT Determination">
+      <bpmn:outgoing>Flow_0s59ohr</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0ab8ce8" sourceRef="Activity_08vzhrs" targetRef="Activity_1y5x34k" />
+    <bpmn:serviceTask id="Activity_008e0rg" name="Run EDT Calculation">
+      <bpmn:incoming>Flow_0s59ohr</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vij3n7</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_08vzhrs" name="Request Ancillary Charges">
+      <bpmn:incoming>Flow_0vij3n7</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ab8ce8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_1y5x34k" name="Identify Payer Details">
+      <bpmn:incoming>Flow_0ab8ce8</bpmn:incoming>
+      <bpmn:outgoing>Flow_05qayxb</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_0cl2wyc" name="Process Completed">
+      <bpmn:incoming>Flow_05qayxb</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_00slypr">
+      <bpmndi:BPMNShape id="Participant_14syroo_di" bpmnElement="Participant_14syroo" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="840" height="450" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="272" y="277" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="256" y="320" width="69" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0cr2vxy_di" bpmnElement="Activity_008e0rg">
+        <dc:Bounds x="360" y="255" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_11q0jz3_di" bpmnElement="Activity_08vzhrs">
+        <dc:Bounds x="520" y="255" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0bq02d2_di" bpmnElement="Activity_1y5x34k">
+        <dc:Bounds x="680" y="255" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0cl2wyc_di" bpmnElement="Event_0cl2wyc">
+        <dc:Bounds x="842" y="277" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="834" y="320" width="54" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0s59ohr_di" bpmnElement="Flow_0s59ohr">
+        <di:waypoint x="308" y="295" />
+        <di:waypoint x="360" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vij3n7_di" bpmnElement="Flow_0vij3n7">
+        <di:waypoint x="460" y="295" />
+        <di:waypoint x="520" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05qayxb_di" bpmnElement="Flow_05qayxb">
+        <di:waypoint x="780" y="295" />
+        <di:waypoint x="842" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ab8ce8_di" bpmnElement="Flow_0ab8ce8">
+        <di:waypoint x="620" y="295" />
+        <di:waypoint x="680" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1cf6wuu_di" bpmnElement="Association_1cf6wuu">
+        <di:waypoint x="425" y="335" />
+        <di:waypoint x="447" y="390" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1pezyqt_di" bpmnElement="Association_1pezyqt">
+        <di:waypoint x="598" y="335" />
+        <di:waypoint x="637" y="390" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1c6oswm_di" bpmnElement="Association_1c6oswm">
+        <di:waypoint x="420" y="170" />
+        <di:waypoint x="413" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_1a28hhc_di" bpmnElement="TextAnnotation_1a28hhc">
+        <dc:Bounds x="410" y="390" width="160" height="70" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0kf80b4_di" bpmnElement="TextAnnotation_0kf80b4">
+        <dc:Bounds x="620" y="390" width="100" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0hnnkfm" bpmnElement="TextAnnotation_1bxbdfc">
+        <dc:Bounds x="420" y="150" width="170" height="40" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
